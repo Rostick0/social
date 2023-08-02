@@ -2,14 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\User\UserRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index(Request $request){
+    public function index(UserRequest $request)
+    {
+        $users = [];
 
-        $users = User::with("friends.friend")->get();
+        $perPage = $request->perPage;
+        $page = $request->page;
+
+        if (count($request["extend"]) > 0) {
+            $users = User::with($request["extend"])->paginate($perPage, ["*"], "page", $page);
+        } else {
+            $users = User::paginate($perPage, ["*"], "page", $page);
+        }
 
         return response()->json($users);
     }

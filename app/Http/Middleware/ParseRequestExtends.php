@@ -17,7 +17,11 @@ class ParseRequestExtends
     {
         $extends = mb_split(",", $request["extend"]);
 
-        $request["extend"] = $extends;
+        if (strlen($extends[0]) == 0) {
+            $request["extend"] = [];
+        } else {
+            $request["extend"] =  $extends;
+        }
 
         return $next($request);
     }
