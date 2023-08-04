@@ -43,7 +43,8 @@ class Kernel extends HttpKernel
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            ParseRequestExtends::class
+            \App\Http\Middleware\ParseRequestExtends::class,
+            \App\Http\Middleware\JsonResponseMiddleware::class,
         ],
 
         
@@ -58,7 +59,7 @@ class Kernel extends HttpKernel
      */
     protected $middlewareAliases = [
         'auth.check'=>\App\Http\Middleware\CheckIsAuth::class,
-        
+
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
