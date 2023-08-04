@@ -14,6 +14,12 @@ class File extends Model
 
     public static function createAndSaveInStorage(UploadedFile $file)
     {
+        if (!$file){
+            return [
+                'id'=>null,
+            ];
+        }
+
         $size = $file->getSize();
         $mime_type = $file->getClientMimeType();
         $extension = $file->extension();

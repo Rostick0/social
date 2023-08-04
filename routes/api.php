@@ -38,6 +38,13 @@ Route::group([
     Route::get("/", "UserController@index");
 });
 
+Route::group([
+    'prefix' => 'profile',
+    'middleware' => ['api', 'auth.check'],
+    'namespace' => '\\App\\Http\\Controllers\\'
+], function () {
+    Route::put("/", "ProfileController@updateProfile");
+});
 
 Route::group([
     'prefix' => 'friends',

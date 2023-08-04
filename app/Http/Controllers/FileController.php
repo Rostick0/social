@@ -29,9 +29,9 @@ class FileController extends Controller
 
     public function deleteById($id)
     {
-        $fileRow = File::where([
+        $fileRow = File::firstWhere([
             'id' => $id,
-        ])->first();
+        ]);
 
         if (!$fileRow) {
             return response()->json(['success' => false, 'message' => 'File not found']);

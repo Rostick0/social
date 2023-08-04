@@ -11,7 +11,7 @@ class CheckIsAuth
     public function handle(Request $request, Closure $next): Response
     {
         if (!auth()->check() || !auth()->user()) {
-            return response('Not authorized',400);
+            return response()->json(['message' => 'Not authorized'], 400);
         }
         return $next($request);
     }

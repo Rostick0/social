@@ -22,23 +22,23 @@ class FriendController extends Controller
         $user_id = auth()->id();
         $friend_id = $id;
 
-        if (!User::where(["id" => $friend_id])->first()) {
+        if (!User::firstWhere(["id" => $friend_id])) {
             return response()->json(['message' => "no person with current id"], 400);
         }
 
         if ($user_id == $friend_id) {
-            return response(['message' => "it is forbidden to unfriend yourself"], 400);
+            return response()->json(['message' => "it is forbidden to unfriend yourself"], 400);
         }
-
-        $user = Friend::where(["user_id" => $user_id, "friend_id" => $friend_id])->firstOrFail();
-
+        
+        $user = Friend::firstWhere(["user_id" => $user_id, "friend_id" => $friend_id]);
+        
         if (!$user) {
-            return response([
+            return response()->json([
                 'message' => 'no friend with current id'
-            ])->json($user);
+            ], 400);
         }
 
-        $friend = Friend::where(["user_id" =>  $friend_id, "friend_id" => $user_id])->first();
+        $friend = Friend::firstWhere(["user_id" =>  $friend_id, "friend_id" => $user_id]);
         $friend['accepted'] = false;
 
         $user->delete();
@@ -52,7 +52,7 @@ class FriendController extends Controller
         $user_id = auth()->id();
         $friend_id = $id;
 
-        if (!User::where(["id" => $friend_id])->first()) {
+        if (!User::firstWhere(["id" => $friend_id])) {
             return response()->json(['message' => "no person with current id"], 400);
         }
 
@@ -60,14 +60,14 @@ class FriendController extends Controller
             return response()->json(['message' => "it is forbidden to friend yourself"], 400);
         }
 
-        $foundFriend = Friend::where(["user_id" => $user_id, "friend_id" => $friend_id])->first();
+        $foundFriend = Friend::firstWhere(["user_id" => $user_id, "friend_id" => $friend_id]);
 
         if ($foundFriend) {
-            return response()->json([$foundFriend, "abob"]);
+            return response()->json($foundFriend);
         }
 
         $friendIsAccept = false;
-        $friend = Friend::where("user_id", $friend_id)->where("friend_id", $user_id)->first();
+        $friend = Friend::firstWhere(["user_id" => $friend_id, "friend_id" => $user_id]);
         if ($friend) {
             $friendIsAccept = true;
             $friend->accepted = true;
