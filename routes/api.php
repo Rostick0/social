@@ -22,8 +22,8 @@ Route::group([
 });
 
 Route::group([
-    'middleware' => 'api',
     'prefix' => 'files',
+    'middleware' =>  ['api', 'auth.check'],
     'namespace' => '\\App\\Http\\Controllers\\'
 ], function () {
     Route::post("/", 'FileController@upload');
@@ -38,4 +38,13 @@ Route::group([
     Route::get("/", "UserController@index");
 });
 
-Route::post("friends", "\\App\\Http\\Controllers\\FriendController@create");
+
+Route::group([
+    'prefix' => 'friends',
+    'middleware' => ['api', 'auth.check'],
+    'namespace' => '\\App\\Http\\Controllers\\'
+], function () {
+    Route::get("/", "FriendController@getFriends");
+    Route::post("/{id}", "FriendController@makeFriend");
+    Route::delete("/{id}", "FriendController@unFriend");
+});
