@@ -43,7 +43,8 @@ Route::group([
     'middleware' => ['api', 'auth.check'],
     'namespace' => '\\App\\Http\\Controllers\\'
 ], function () {
-    Route::put("/", "ProfileController@updateProfile");
+    Route::get("/", "ProfileController@getProfile");
+    Route::post("/", "ProfileController@updateProfile");
 });
 
 Route::group([

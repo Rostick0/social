@@ -9,16 +9,25 @@ use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
+    public function getProfile(Request $request)
+    {
+        $extend = $request["extend"];
+
+        $profile = User::with($extend)->firstWhere([
+            'id' => auth()->id(),
+        ]);
+
+        return response()->json($profile);
+    }
 
     public function updateProfile(ProfileUpdateRequest $request)
     {
         $request->validated();
 
-        return response()->json( $request->validated());
         $photo_id = null;
-        if ($request['photo']){
-           $file = File::createAndSaveInStorage($request['photo']);
-           $photo_id = $file->id;
+        if ($request['photo']) {
+            $file = File::createAndSaveInStorage($request['photo']);
+            $photo_id = $file->id;
         }
 
         $data = [
@@ -31,7 +40,8 @@ class ProfileController extends Controller
             'email' => $request['email'],
         ];
 
-        $user = User::firstWhere('id',auth()->id())->update($data);
+        $user = User::firstWhere('id', auth()->id());
+        $user->update($data);
 
         return response()->json($user);
     }
