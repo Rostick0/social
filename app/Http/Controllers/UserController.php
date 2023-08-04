@@ -15,9 +15,13 @@ class UserController extends Controller
         $page = $request->page;
 
         if (count($request["extend"]) > 0) {
-            $users = User::with($request["extend"])->paginate($perPage, ["*"], "page", $page);
+            $users = User::with($request["extend"])->where([
+                'id'=>auth()->user()->id,
+            ])->first();
         } else {
-            $users = User::paginate($perPage, ["*"], "page", $page);
+            $users = User::where([
+                'id'=>auth()->user()->id,
+            ])->first();
         }
 
         return response()->json($users);
