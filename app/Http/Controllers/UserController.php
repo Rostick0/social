@@ -10,19 +10,11 @@ class UserController extends Controller
 {
     public function index(UserRequest $request)
     {
-        $users = [];
+        $extend = $request["extend"];
+        $limit = $request->limit;
 
-        if (count($request["extend"]) > 0) {
-            $users = User::with($request["extend"])->firstWhere([
-                'id'=>auth()->user()->id,
-            ]);
-        } else {
-            $users = User::firstWhere([
-                'id'=>auth()->user()->id,
-            ]);
-        }
+        $users = User::with($extend)->paginate($limit);
 
         return response()->json($users);
     }
-
 }
