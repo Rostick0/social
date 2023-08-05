@@ -10,6 +10,16 @@ use Illuminate\Support\Facades\Request;
 
 class FileController extends Controller
 {
+    // public function uploadMultiple(){
+    //     $fileRows = [];
+    //     if ($request->has("file")) {
+    //         foreach ($file as $key => $value) {
+    //             $fileRows[] = File::createAndSaveInStorage($value);
+    //         }
+    //     }
+
+    // }
+
     public function upload(FileRequest $request)
     {
         $request->validated();

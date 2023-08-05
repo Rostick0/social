@@ -6,12 +6,10 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
     public function up(): void
     {
-        Schema::create('photos', function (Blueprint $table) {
+        Schema::create('gallery', function (Blueprint $table) {
             $table->id();
 
             $table->integer('likes')->default(0);
@@ -33,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('photos');
+        Schema::dropIfExists('gallery');
     }
 };

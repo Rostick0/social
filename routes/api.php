@@ -56,3 +56,13 @@ Route::group([
     Route::post("/{id}", "FriendController@makeFriend");
     Route::delete("/{id}", "FriendController@unFriend");
 });
+
+
+Route::group([
+    'prefix' => 'gallery',
+    'middleware' => ['api', 'auth.check'],
+    'namespace' => '\\App\\Http\\Controllers\\'
+], function () {
+    Route::get("", "GalleryController@getPhotos");
+    Route::post("", "GalleryController@addPhoto");
+});

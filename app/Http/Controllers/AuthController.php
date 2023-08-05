@@ -17,11 +17,15 @@ class AuthController extends Controller
    
     public function register()
     {   
-        $credentials = request(['phone', 'password','name','email']);
+        $credentials = request(['phone', 'password','name']);
 
+        $user = User::firstWhere('phone',$credentials['phone']);
+
+        if ($user){
+            return response()->json(['message'=>'Пользователь с такими номером телефона уже существует'],400);
+        }
 
         $user = User::create([
-            "email"=>$credentials["email"],
             "password" => bcrypt($credentials["password"]),
             "name" =>$credentials['name'],
             "phone" =>$credentials['phone']
@@ -63,7 +67,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => auth()->factory()->getTTL() * 10000
         ]);
     }
 }

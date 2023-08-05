@@ -43,6 +43,6 @@ class ProfileController extends Controller
         $user = User::firstWhere('id', auth()->id());
         $user->update($data);
 
-        return response()->json($user);
+        return response()->json([$user,$photo_id]);
     }
 }

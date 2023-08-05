@@ -12,11 +12,45 @@ class File extends Model
 
     protected $guarded = ['id'];
 
+    public static function bulkCreateAndSaveInStorage($files)
+    {
+        if (!$files) {
+            return [];
+        }
+        $fileRows = [];
+        
+        if ($files) {
+            foreach ($files as $file) {
+                $size = $file->getSize();
+                $mime_type = $file->getClientMimeType();
+                $extension = $file->extension();
+
+                $unique_name = uniqid() . "." . $extension;
+                $original_name = $file->getClientOriginalName();
+
+                $link = url('storage/images/' . $unique_name);
+
+                $fileRows[] = File::create([
+                    'size' => $size,
+                    'mime_type' => $mime_type,
+                    'extension' => $extension,
+                    'file_name' => $unique_name,
+                    'original_name' => $original_name,
+                    'link' => $link
+                ]);
+
+                $file->move(storage_path('app/public/images'), $unique_name);
+            }
+        }
+
+        return $fileRows;
+    }
+
     public static function createAndSaveInStorage(UploadedFile $file)
     {
-        if (!$file){
+        if (!$file) {
             return [
-                'id'=>null,
+                'id' => null,
             ];
         }
 

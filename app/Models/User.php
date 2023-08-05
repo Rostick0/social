@@ -16,12 +16,13 @@ class User extends Authenticatable implements JWTSubject
 
     protected $fillable = [
         'password',
+        'phone',
         'name',
         'surname',
         'patronymic',
         'status',
         'age',
-        'file_id',
+        'photo_id',
         'email',
     ];
 
@@ -35,9 +36,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Friend::class, "user_id", "id");
     }
-    public function photos(): HasMany
+    public function gallery(): HasMany
     {
-        return $this->hasMany(Photo::class, "user_id", "id");
+        return $this->hasMany(Gallery::class, "user_id", "id");
     }
     public function photo(): BelongsTo
     {
