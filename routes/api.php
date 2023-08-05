@@ -66,3 +66,12 @@ Route::group([
     Route::get("", "GalleryController@getPhotos");
     Route::post("", "GalleryController@addPhoto");
 });
+
+Route::group([
+    'prefix' => 'comment',
+    'middleware' => ['api', 'auth.check'],
+    'namespace' => '\\App\\Http\\Controllers\\'
+], function () {
+    Route::get("/gallery/{id}", "CommentController@getGalleryComments");
+    Route::post("/gallery/{id}", "CommentController@commentGallery");
+});
