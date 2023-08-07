@@ -75,3 +75,11 @@ Route::group([
     Route::get("/gallery/{id}", "CommentController@getGalleryComments");
     Route::post("/gallery/{id}", "CommentController@commentGallery");
 });
+Route::group([
+    'prefix' => 'like',
+    'middleware' => ['api', 'auth.check'],
+    'namespace' => '\\App\\Http\\Controllers\\'
+], function () {
+    Route::get("/gallery/{id}", "LikeController@getGalleryLikes");
+    Route::post("/gallery/{id}", "LikeController@likeGallery");
+});
