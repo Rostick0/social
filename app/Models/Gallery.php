@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Gallery extends Model
 {
@@ -29,5 +30,9 @@ class Gallery extends Model
     public function photo(): BelongsTo
     {
         return $this->belongsTo(File::class, "photo_id", "id");
+    }
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class, "photo_id", "id");
     }
 }

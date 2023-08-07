@@ -20,10 +20,12 @@ class CommentController extends Controller
     }
     public function commentGallery(Request $request, $id)
     {
+        $content  = $request["content"];
         $photo_id = $id;
 
         $comment = Comment::create([
-            "photo_id" => $photo_id
+            "photo_id" => $photo_id,
+            "content" => $content,
         ]);
 
         return response()->json($comment);
