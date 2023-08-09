@@ -3,22 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\UserRequest;
+use App\Http\Requests\User\UserUpdateRequest;
 use App\Models\User;
 
 class UserController extends Controller
 {
     public function index(UserRequest $request)
     {
-        $users = [];
+        $extend = $request["extend"];
+        $limit = $request->limit;
 
-        $perPage = $request->perPage;
-        $page = $request->page;
-
-        if (count($request["extend"]) > 0) {
-            $users = User::with($request["extend"])->paginate($perPage, ["*"], "page", $page);
-        } else {
-            $users = User::paginate($perPage, ["*"], "page", $page);
-        }
+        $users = User::with($extend)->paginate($limit);
 
         return response()->json($users);
     }

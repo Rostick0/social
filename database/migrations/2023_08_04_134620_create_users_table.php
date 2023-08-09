@@ -19,15 +19,13 @@ return new class extends Migration
             $table->string('status')->nullable();
             $table->integer('age')->nullable();
 
-            $table->unsignedBigInteger('file_id')->nullable();
-            $table->foreign('file_id')->references("id")->on("files")->nullable();
+            $table->unsignedBigInteger('photo_id')->nullable();
+            $table->foreign('photo_id')->references("id")->on("files")->nullable();
 
             $table->string('email')->nullable();
             $table->string('password'); // REQUIRED
             $table->string('phone')->unique(); // REQUIRED
 
-            $table->timestamp('email_verified_at')->nullable();
-            $table->rememberToken();
             $table->timestamps();
         });
     }

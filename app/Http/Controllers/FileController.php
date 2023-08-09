@@ -4,29 +4,58 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\File\FileRequest;
 use App\Models\File;
-use App\Utils\FileUtils;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Request;
+
 
 class FileController extends Controller
 {
-    public function index()
+    // public function uploadMultiple(){
+    //     $fileRows = [];
+    //     if ($request->has("file")) {
+    //         foreach ($file as $key => $value) {
+    //             $fileRows[] = File::createAndSaveInStorage($value);
+    //         }
+    //     }
+
+    // }
+
+    public function upload(FileRequest $request)
     {
-        $files = File::limit(5)->get();
+        $request->validated();
+        
+        $file = request()->file('file');
 
-        return response()->json($files);
-    }
-    public function create(FileRequest $request)
-    {
-        $data = $request->validated();
+        if (!$file) {
+            return response()->json([
+                'message' => 'file is required'
+            ], 400);
+        }
 
-        $file = new FileUtils($data["file"]);
-        $file->saveInStorage();
-
-        $fileRow = File::create([
-            'name' => $file->uniqueName,
-            'link' => $file->link,
-            'size' => $file->size,
-        ]);
+        $fileRow = File::createAndSaveInStorage($file);
 
         return response()->json($fileRow);
+    }
+
+    public function deleteById($id)
+    {
+        $fileRow = File::firstWhere([
+            'id' => $id,
+        ]);
+
+        if (!$fileRow) {
+            return response()->json(['success' => false, 'message' => 'File not found']);
+        }
+
+        $filePath = storage_path('app\\public\\images\\' . $fileRow['file_name']);
+
+        if (!file_exists($filePath)) {
+            return response()->json(['success' => false, 'message' => 'File not found']);
+        }
+
+        $fileRow->delete();
+        unlink($filePath);
+
+        return response()->json(['success' => true]);
     }
 }
