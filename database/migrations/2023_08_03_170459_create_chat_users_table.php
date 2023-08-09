@@ -11,16 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('chat_users', function (Blueprint $table) {
             $table->id();
-            $table->text('content');
-            $table->integer('count_like')->default(0);
-            $table->integer('count_comment')->default(0);
-            $table->integer('count_view')->default(0);
-            $table->unsignedBigInteger('theme_id');
-            $table->foreignId('theme_id')->nullable()->constrained();
+            $table->unsignedBigInteger('chat_id');
+            $table->foreign('chat_id')->references('id')->on('chats')->cascadeOnDelete();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->integer('count_unread_message')->default(0);
+            $table->boolean('is_favorite')->default(0);
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('chat_users');
     }
 };

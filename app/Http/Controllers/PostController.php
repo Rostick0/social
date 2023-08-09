@@ -13,6 +13,9 @@ class PostController extends Controller
      */
     public function index()
     {
+        $data = Post::orderByDesc('id')->paginate(20);
+
+        return response()->json($data);
     }
 
     /**
